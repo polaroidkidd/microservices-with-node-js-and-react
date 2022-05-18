@@ -2,15 +2,12 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
-  },
   "scripts": {
     "client:start": "react-scripts start",
     "client:build": "react-scripts build",
     "client:test": "react-scripts test",
-    "client:eject": "react-scripts eject"
+    "client:eject": "react-scripts eject",
+    "client:lint:error": "eslint --quiet \"src/**/*.ts{,x}\""
   },
   "eslintConfig": {
     "extends": [
@@ -30,16 +27,20 @@
       "last 1 safari version"
     ]
   },
+  "dependencies": {
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "web-vitals": "^2.1.4",
+    "@testing-library/jest-dom": "^5.16.4"
+  },
   "devDependencies": {
     "typescript": "^4.6.4",
-    "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.1",
     "@types/node": "^16.11.36",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "react-scripts": "5.0.1"
   }
 }
