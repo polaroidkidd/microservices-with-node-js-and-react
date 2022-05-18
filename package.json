@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "name": "blog",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "scripts": {
+    "prepare": "husky install",
+    "clean": "rimraf ./**/node_modules"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^3.2.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,css,scss,md,ts,tsx}": [
+      "prettier --config ./prettier.config.js  --write"
+    ],
+    "*.{js,css,md}": "prettier --write"
+  }
+}
