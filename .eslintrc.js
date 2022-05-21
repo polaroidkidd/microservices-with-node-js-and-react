@@ -11,6 +11,7 @@ module.exports = {
     "import/prefer-default-export": "off",
     "import/no-default-export": "error",
     "no-void": "off",
+    "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
   },
   parserOptions: {
     project: "./tsconfig.base.json",
