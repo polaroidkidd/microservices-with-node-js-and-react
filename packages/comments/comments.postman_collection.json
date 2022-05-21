@@ -1,0 +1,97 @@
+{
+  "info": {
+    "_postman_id": "9026c38f-8b4c-4a1d-91fe-4a7a70946e7f",
+    "name": "comments",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "9672935"
+  },
+  "item": [
+    {
+      "name": "posts",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\":\"This is my first post\"\n}"
+        },
+        "url": {
+          "raw": "{{localhost}}:{{port}}/posts",
+          "host": ["{{localhost}}"],
+          "port": "{{port}}",
+          "path": ["posts"],
+          "query": [
+            {
+              "key": "",
+              "value": null,
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "posts",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{localhost}}:{{port}}/posts",
+          "host": ["{{localhost}}"],
+          "port": "{{port}}",
+          "path": ["posts"],
+          "query": [
+            {
+              "key": "",
+              "value": null,
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "port",
+      "value": "4000"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "info": {
+    "_postman_id": "842650e1-6052-4ac2-a7d9-b625a072ab66",
+    "name": "posts",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "9672935"
+  },
+  "item": [
+    {
+      "name": "comment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"content\":\"This is a another comment\"\n}"
+        },
+        "url": {
+          "raw": "{{localhost}}:{{port}}/posts/123/comments",
+          "host": ["{{localhost}}"],
+          "port": "{{port}}",
+          "path": ["posts", "123", "comments"],
+          "query": [
+            {
+              "key": "",
+              "value": null,
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "comments",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{localhost}}:{{port}}/posts/123/comments",
+          "host": ["{{localhost}}"],
+          "port": "{{port}}",
+          "path": ["posts", "123", "comments"],
+          "query": [
+            {
+              "key": "",
+              "value": null,
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "port",
+      "value": "4001"
+    }
+  ]
+}

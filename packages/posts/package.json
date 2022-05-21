@@ -1,11 +1,11 @@
 {
   "private": true,
-  "name": "posts",
+  "name": "@ms/posts",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./src/index.ts"
+    "posts:start": "nodemon ./src/index.ts"
   },
   "keywords": [],
   "author": "",
