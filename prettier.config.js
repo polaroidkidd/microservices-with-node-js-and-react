@@ -6,7 +6,7 @@ module.exports = {
   singleQuote: false,
   trailingComma: "es5",
   arrowParens: "avoid",
-  importOrder: ["<THIRD_PARTY_MODULES>", "^[./]"],
+  importOrder: ["<THIRD_PARTY_MODULES>", "@ms/(.*)$", "^[./]"],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   overrides: [

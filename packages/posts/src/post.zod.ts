@@ -2,7 +2,11 @@ import z from "zod";
 
 export const IPostSchema = z.object({
   title: z.string(),
-  id: z.string().optional(),
+  id: z.string(),
+});
+
+export const IApiPostSchema = z.object({
+  title: z.string(),
 });
 export const IPostsSchema = z.record(IPostSchema);
 
