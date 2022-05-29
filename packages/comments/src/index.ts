@@ -4,9 +4,10 @@ import { randomBytes } from "crypto";
 import type { Request, Response } from "express";
 import express from "express";
 import type { ZodError } from "zod";
+import type z from "zod";
 
-import type { IApiComment, IComment, ICommentsByPostId } from "./comments.zod";
-import { IApiCommentSchema, IApiCommentsByPostIdSchema } from "./comments.zod";
+import type { IComment, ICommentsByPostId } from "./comments.zod";
+import { CommentSchema, CommentsByPostIdSchema } from "./comments.zod";
 
 enum ROUTES {
   POSTS = "/posts/:id/comments",
@@ -22,18 +23,22 @@ app.get(ROUTES.POSTS, (req: Request<{ id: string }>, res: Response<IComment[]>) 
   res.send(commentsByPostId[req.params.id] || []);
 });
 
-app.post(ROUTES.POSTS, (req: Request<{ id: string }, {}, IApiComment>, res: Response<IComment[] | ZodError>) => {
+const ResComment = CommentSchema.pick({ content: true });
+
+type IResComment = z.infer<typeof ResComment>;
+
+app.post(ROUTES.POSTS, (req: Request<{ id: string }, {}, IResComment>, res: Response<IComment[] | ZodError>) => {
   const commentId = randomBytes(4).toString("hex");
   try {
     // parse request
-    const parsedBody = IApiCommentSchema.parse(req.body);
+    const parsedBody = ResComment.parse(req.body);
 
     const comments = commentsByPostId[req.params.id] || [];
     comments.push({ id: commentId, content: parsedBody.content });
     commentsByPostId[req.params.id] = comments;
 
     // parse response
-    IApiCommentsByPostIdSchema.parse(commentsByPostId);
+    CommentsByPostIdSchema.parse(commentsByPostId);
 
     res.status(201).send(comments);
   } catch (e) {

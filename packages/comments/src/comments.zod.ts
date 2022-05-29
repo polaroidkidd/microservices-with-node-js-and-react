@@ -1,16 +1,11 @@
 import z from "zod";
 
-export const IApiCommentSchema = z.object({
-  content: z.string(),
-});
-
-export const ICommentSchema = z.object({
+export const CommentSchema = z.object({
   content: z.string(),
   id: z.string(),
 });
 
-export const IApiCommentsByPostIdSchema = z.record(z.array(ICommentSchema));
+export const CommentsByPostIdSchema = z.record(z.array(CommentSchema));
 
-export type IComment = z.infer<typeof ICommentSchema>;
-export type IApiComment = z.infer<typeof IApiCommentSchema>;
-export type ICommentsByPostId = z.infer<typeof IApiCommentsByPostIdSchema>;
+export type IComment = z.infer<typeof CommentSchema>;
+export type ICommentsByPostId = z.infer<typeof CommentsByPostIdSchema>;
