@@ -10,16 +10,18 @@
   "useWorkspaces": true,
   "scripts": {
     "prepare": "husky install",
-    "clean": "rimraf ./**/node_modules"
+    "clean": "rimraf ./**/node_modules",
+    "dev:client": "cd packages/client && yarn run client:start",
+    "dev:comments": "cd packages/comments && yarn run comments:start",
+    "dev:posts": "cd packages/posts && yarn run posts:start",
+    "dev": "concurrently --kill-others \"yarn dev:client\" \"yarn dev:comments\" \"yarn dev:posts\""
   },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^3.2.0",
-    "husky": "^7.0.4",
-    "lint-staged": "^12.4.1",
-    "prettier": "^2.6.2",
     "@babel/eslint-parser": "^7.17.0",
+    "@trivago/prettier-plugin-sort-imports": "^3.2.0",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
+    "concurrently": "^7.2.1",
     "eslint": "^8.13.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -33,7 +35,10 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.4.0"
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [

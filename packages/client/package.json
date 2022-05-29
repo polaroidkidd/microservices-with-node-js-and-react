@@ -28,14 +28,14 @@
     ]
   },
   "dependencies": {
+    "@ms/comments": "*",
+    "@ms/posts": "*",
     "@testing-library/jest-dom": "^5.16.4",
     "axios": "^0.27.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "web-vitals": "^2.1.4",
-    "zod": "^3.16.1",
-    "@ms/comments": "*",
-    "@ms/posts": "*"
+    "zod": "^3.16.1"
   },
   "devDependencies": {
     "@testing-library/react": "^13.2.0",
