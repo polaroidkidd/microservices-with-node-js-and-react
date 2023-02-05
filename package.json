@@ -15,7 +15,7 @@
     "dev:comments": "cd packages/comments && yarn comments:start",
     "dev:posts": "cd packages/posts && yarn posts:start",
     "dev:event-bus": "cd packages/event-bus && yarn event-bus:start",
-    "dev": "concurrently --kill-others \"yarn dev:client\" \"yarn dev:comments\" \"yarn dev:posts\" \"yarn dev:event-bus\""
+    "dev": "concurrently --names \"client,comments,posts,event-bus\"  --kill-others --timings \"yarn dev:client\" \"yarn dev:comments\" \"yarn dev:posts\" \"yarn dev:event-bus\""
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",

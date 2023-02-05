@@ -38,5 +38,5 @@ app.post(Routes.EVENTS, (req: Request<{}, {}, IEventSchema>, res: Response<{ sta
 });
 
 app.listen(4005, () => {
-  console.log("Listening on 4005");
+  console.log('Service "Eventbus" is listening on 4005');
 });

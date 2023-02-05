@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "comments:start": "nodemon ./src/index.ts"
+    "comments:start": "nodemon ./src/commentsService.ts"
   },
   "author": "",
   "license": "ISC",

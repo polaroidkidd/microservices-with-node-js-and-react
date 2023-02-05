@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "posts:start": "nodemon ./src/index.ts"
+    "posts:start": "nodemon ./src/postService.ts"
   },
   "keywords": [],
   "author": "",

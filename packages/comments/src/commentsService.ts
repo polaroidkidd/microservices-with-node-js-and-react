@@ -48,5 +48,5 @@ app.post(ROUTES.POSTS, (req: Request<{ id: string }, {}, IResComment>, res: Resp
 });
 
 app.listen(4001, () => {
-  console.log("Listening on 4001");
+  console.info('Service "Comments" is listening on 4001');
 });

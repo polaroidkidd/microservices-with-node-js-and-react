@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "event-bus:start": "nodemon ./src/index.ts"
+    "event-bus:start": "nodemon ./src/eventBusService.ts"
   },
   "keywords": [],
   "author": "",

@@ -48,5 +48,5 @@ app.post(ROUTES.POSTS, (req: Request<{}, {}, IPost>, res: Response<IPost | ZodEr
 });
 
 app.listen(4000, () => {
-  console.log("Listening on 4000");
+  console.log('Sercice "Posts" is listening on 4000');
 });
