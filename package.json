@@ -11,6 +11,7 @@
   "scripts": {
     "prepare": "husky install",
     "clean": "rimraf ./**/node_modules",
+    "eslint:fix": "yarn eslint --config ./.eslintrc.js --fix",
     "dev:client": "cd packages/client && yarn client:start",
     "dev:comments": "cd packages/comments && yarn comments:start",
     "dev:posts": "cd packages/posts && yarn posts:start",

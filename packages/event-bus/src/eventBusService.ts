@@ -1,4 +1,3 @@
-import type { AxiosResponse } from "axios";
 import axios from "axios";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -21,21 +20,27 @@ app.use(bodyParser.json());
 
 app.use(cors({ origin: "http://localhost:3000" }));
 
-app.post(Routes.EVENTS, async (req: Request<{}, {}, IEventSchema>, res: Response<IPost | ZodError>) => {
-  try {
-    const parsedEvent = EventSchema.parse(req.body);
+app.post(
+  Routes.EVENTS,
+  async (
+    req: Request<{}, {}, IEventSchema>,
+    res: Response<IPost | ZodError>
+  ) => {
+    try {
+      const parsedEvent = EventSchema.parse(req.body);
 
-    const response: AxiosResponse<IPost> = await axios.post(ServiceEventEndpoints.POSTS, parsedEvent);
-    // axios.post(SERVIVCES.COMMENTS, parsedEvent);
-    // axios.post(SERVIVCES.QUERY, parsedEvent);
+      await axios.post(ServiceEventEndpoints.POSTS, parsedEvent);
+      // await axios.post(ServiceEventEndpoints.COMMENTS, parsedEvent);
+      // axios.post(SERVIVCES.QUERY, parsedEvent);
 
-    res.status(200);
-    res.send(response.data);
-  } catch (e) {
-    console.error(e);
-    res.status(422).send(e as ZodError);
+      res.status(200);
+      res.send();
+    } catch (e) {
+      console.error(e);
+      res.status(422).send(e as ZodError);
+    }
   }
-});
+);
 
 app.listen(4005, () => {
   console.log('Service "Eventbus" is listening on 4005');

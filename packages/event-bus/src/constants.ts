@@ -4,3 +4,8 @@ export enum ServiceEventEndpoints {
   QUERY = "http://localhost:4002/events",
   EVENT_BUS = "http://localhost:4005/events",
 }
+
+export enum Events {
+  PostCreated = "PostCreated",
+  CommentCreated = "CommentCreated",
+}

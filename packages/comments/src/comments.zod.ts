@@ -5,6 +5,10 @@ export const CommentSchema = z.object({
   id: z.string(),
 });
 
+export const ICommentSchemaEvent = z.object({
+  type: z.string(),
+  data: CommentSchema,
+});
 export const CommentsByPostIdSchema = z.record(z.array(CommentSchema));
 
 export type IComment = z.infer<typeof CommentSchema>;
