@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "client:start": "react-scripts start",
+    "client:prod": "yarn client:build && yarn serve -s build -l 3000",
     "client:build": "react-scripts build",
     "client:test": "react-scripts test",
     "client:eject": "react-scripts eject",
@@ -48,6 +49,7 @@
     "@typescript-eslint/parser": "^5.25.0",
     "eslint": "^8.16.0",
     "react-scripts": "5.0.1",
+    "serve": "^14.2.0",
     "typescript": "^4.6.4"
   }
 }

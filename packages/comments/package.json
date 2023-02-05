@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ms/posts": "*",
     "axios": "^0.21.1",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
@@ -17,7 +18,7 @@
     "nodemon": "^2.0.7",
     "ts-node": "^10.7.0",
     "zod": "^3.16.1",
-    "@ms/posts": "*"
+    "@ms/event-bus": "*"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

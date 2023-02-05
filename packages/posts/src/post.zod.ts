@@ -5,6 +5,11 @@ export const IPostSchema = z.object({
   id: z.string(),
 });
 
+export const IPostSchemaEvent = z.object({
+  type: z.string(),
+  data: IPostSchema,
+});
+
 export const IApiPostSchema = z.object({
   title: z.string(),
 });
