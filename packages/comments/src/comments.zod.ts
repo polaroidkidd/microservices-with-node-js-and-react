@@ -3,6 +3,7 @@ import z from "zod";
 export const CommentSchema = z.object({
   content: z.string(),
   id: z.string(),
+  postId: z.string(),
 });
 
 export const ICommentSchemaEvent = z.object({

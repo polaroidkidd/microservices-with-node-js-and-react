@@ -12,11 +12,13 @@
     "prepare": "husky install",
     "clean": "rimraf ./**/node_modules",
     "eslint:fix": "yarn eslint --config ./.eslintrc.js --fix",
-    "dev:client": "cd packages/client && yarn client:start",
-    "dev:comments": "cd packages/comments && yarn comments:start",
-    "dev:posts": "cd packages/posts && yarn posts:start",
-    "dev:event-bus": "cd packages/event-bus && yarn event-bus:start",
-    "dev": "concurrently --names \"client,comments,posts,event-bus\"  --kill-others --timings \"yarn dev:client\" \"yarn dev:comments\" \"yarn dev:posts\" \"yarn dev:event-bus\""
+    "frontend:dev": "cd packages/client && yarn client:start",
+    "frontend:prod": "cd packages/client && yarn client:prod",
+    "dev:backend:comments": "cd packages/comments && yarn comments:start",
+    "dev:backend:posts": "cd packages/posts && yarn posts:start",
+    "dev:backend:query": "cd packages/query && yarn query:start",
+    "dev:backend:event-bus": "cd packages/event-bus && yarn event-bus:start",
+    "dev:backend": "concurrently -c \"auto\" \"yarn:dev:backend:*\""
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",

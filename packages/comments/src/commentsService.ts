@@ -44,7 +44,11 @@ app.post(
     try {
       // parse request
       const parsedBody = ResComment.parse(req.body);
-      const comment = { id: commentId, content: parsedBody.content };
+      const comment: IComment = {
+        id: commentId,
+        content: parsedBody.content,
+        postId: req.params.id,
+      };
       const comments = commentsByPostId[req.params.id] || [];
       comments.push(comment);
       commentsByPostId[req.params.id] = comments;
