@@ -77,9 +77,10 @@ app.post(
   (req: Request, res: Response<{ post: IPost } | ZodError>) => {
     const { body } = req;
     try {
-      const parsedBody = IPostSchemaEvent.parse(body);
-
-      console.info("Event Received: ", parsedBody.type);
+      if (body.type === Events.PostCreated) {
+        const parsedBody = IPostSchemaEvent.parse(body);
+        console.info("Event Received: ", parsedBody.type);
+      }
       res.status(200);
       res.send();
     } catch (e) {

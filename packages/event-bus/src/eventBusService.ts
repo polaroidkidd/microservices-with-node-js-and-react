@@ -28,9 +28,8 @@ app.post(
   ) => {
     try {
       const parsedEvent = EventSchema.parse(req.body);
-
       await axios.post(ServiceEventEndpoints.POSTS, parsedEvent);
-      // await axios.post(ServiceEventEndpoints.COMMENTS, parsedEvent);
+      await axios.post(ServiceEventEndpoints.COMMENTS, parsedEvent);
       // axios.post(SERVIVCES.QUERY, parsedEvent);
 
       res.status(200);

@@ -1,3 +1,4 @@
+import axios from "axios";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { randomBytes } from "crypto";
@@ -5,6 +6,7 @@ import type { Request, Response } from "express";
 import express from "express";
 import type { ZodError, z } from "zod";
 
+import { Events, ServiceEventEndpoints } from "@ms/event-bus/src/constants";
 import type { IPost } from "@ms/posts/src/post.zod";
 
 import type { IComment, ICommentsByPostId } from "./comments.zod";
@@ -42,14 +44,17 @@ app.post(
     try {
       // parse request
       const parsedBody = ResComment.parse(req.body);
-
+      const comment = { id: commentId, content: parsedBody.content };
       const comments = commentsByPostId[req.params.id] || [];
-      comments.push({ id: commentId, content: parsedBody.content });
+      comments.push(comment);
       commentsByPostId[req.params.id] = comments;
 
       // parse response
       CommentsByPostIdSchema.parse(commentsByPostId);
-
+      axios.post(ServiceEventEndpoints.EVENT_BUS, {
+        type: Events.CommentCreated,
+        data: comment,
+      });
       res.status(201).send(comments);
     } catch (e) {
       console.error(e);
@@ -76,9 +81,11 @@ app.post(
   (req: Request, res: Response<{ post: IPost } | ZodError>) => {
     const { body } = req;
     try {
-      const parsedBody = ICommentSchemaEvent.parse(body);
+      if (body.type === Events.CommentCreated) {
+        const parsedBody = ICommentSchemaEvent.parse(body);
 
-      console.info("Event Received: ", parsedBody.type);
+        console.info("Event Received: ", parsedBody.type);
+      }
       res.status(200);
       res.send();
     } catch (e) {
