@@ -18,6 +18,7 @@
     "dev:backend:posts": "cd packages/posts && yarn posts:start",
     "dev:backend:query": "cd packages/query && yarn query:start",
     "dev:backend:event-bus": "cd packages/event-bus && yarn event-bus:start",
+    "dev:backend:moderation": "cd packages/moderation && yarn moderation:start",
     "dev:backend": "concurrently -c \"auto\" \"yarn:dev:backend:*\""
   },
   "devDependencies": {

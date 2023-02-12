@@ -12,8 +12,8 @@ import type { IPost } from "@ms/posts/src/post.zod";
 import type { ICommentBase } from "./comments.zod";
 import {
   CommentModerationState,
+  CommentSchemaEvent,
   CommentSchemaParsed,
-  ICommentSchemaEvent,
 } from "./comments.zod";
 
 enum ROUTES {
@@ -46,7 +46,7 @@ app.post(
 
       // send comment to eventbus
       const response = await axios.post(ServiceEventEndpoints.EVENT_BUS, {
-        type: Events.CommentCreated,
+        type: Events.enum.CommentCreated,
         data: comment,
       });
       res.status(response.status).send();
@@ -62,13 +62,25 @@ app.post(
  */
 app.post(
   ROUTES.EVENTS,
-  (req: Request, res: Response<{ post: IPost } | ZodError>) => {
+  async (req: Request, res: Response<{ post: IPost } | ZodError>) => {
     const { body } = req;
     try {
-      if (body.type === Events.CommentCreated) {
-        const parsedBody = ICommentSchemaEvent.parse(body);
+      if (body.type === Events.enum.CommentCreated) {
+        const parsedBody = CommentSchemaEvent.parse(body);
 
         console.info("Event Received: ", parsedBody.type);
+      }
+      if (body.type === Events.enum.CommentUpdated) {
+        const parsedBody = CommentSchemaEvent.parse(body);
+        const comment = CommentSchemaParsed.parse(parsedBody.data);
+        const content =
+          comment.moderationState === CommentModerationState.enum.Rejected
+            ? "Rejected by Mod Team"
+            : comment.content;
+        await axios.post(ServiceEventEndpoints.EVENT_BUS, {
+          type: Events.enum.CommentUpdated,
+          data: { ...comment, content },
+        });
       }
       res.status(200).send();
     } catch (e) {

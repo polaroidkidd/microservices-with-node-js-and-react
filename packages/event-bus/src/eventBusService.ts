@@ -20,6 +20,9 @@ app.use(bodyParser.json());
 
 app.use(cors({ origin: "http://localhost:3000" }));
 
+/**
+ * Handle incoming events and spreading them to the other services
+ */
 app.post(
   Routes.EVENTS,
   async (
@@ -31,16 +34,17 @@ app.post(
       await axios.post(ServiceEventEndpoints.POSTS, parsedEvent);
       await axios.post(ServiceEventEndpoints.COMMENTS, parsedEvent);
       await axios.post(ServiceEventEndpoints.QUERY, parsedEvent);
+      await axios.post(ServiceEventEndpoints.MODERATION, parsedEvent);
 
       res.status(200);
       res.send();
     } catch (e) {
-      console.error(e);
+      console.error("Failed at Event-Bus Service", e);
       res.status(422).send(e as ZodError);
     }
   }
 );
 
 app.listen(4005, () => {
-  console.log('Service "Eventbus" is listening on 4005');
+  console.info('Service "Eventbus" is listening on 4005');
 });

@@ -13,7 +13,7 @@ export function CommentList({ comments }: { comments: ICommentParsed[] }) {
         return { ...comment, content: "Comment has been rejected" };
       }
       default: {
-        return { ...comment, content: "Moderation is pedning" };
+        return { ...comment, content: "Moderation is pending" };
       }
     }
   });

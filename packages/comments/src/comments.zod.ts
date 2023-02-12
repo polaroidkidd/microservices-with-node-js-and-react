@@ -16,7 +16,7 @@ export const CommentSchemaParsed = CommentSchemaBase.extend({
   moderationState: CommentModerationState,
 });
 
-export const ICommentSchemaEvent = z.object({
+export const CommentSchemaEvent = z.object({
   type: z.string(),
   data: CommentSchemaParsed,
 });

@@ -57,12 +57,12 @@ app.post(
       // parse response
       IPostSchema.parse(post);
       posts[post.id] = post;
-      axios.post(`${ServiceEventEndpoints.EVENT_BUS}`, {
-        type: Events.PostCreated,
+      const response = await axios.post(`${ServiceEventEndpoints.EVENT_BUS}`, {
+        type: Events.enum.PostCreated,
         data: post,
       });
 
-      res.status(201).send(post);
+      res.status(response.status).send(post);
     } catch (e) {
       res.status(422).send(e as ZodError);
     }
@@ -77,7 +77,7 @@ app.post(
   (req: Request, res: Response<{ post: IPost } | ZodError>) => {
     const { body } = req;
     try {
-      if (body.type === Events.PostCreated) {
+      if (body.type === Events.enum.PostCreated) {
         const parsedBody = IPostSchemaEvent.parse(body);
         console.info("Event Received: ", parsedBody.type);
       }
@@ -91,5 +91,5 @@ app.post(
 );
 
 app.listen(4000, () => {
-  console.log('Sercice "Posts" is listening on 4000');
+  console.info('Service "Posts" is listening on 4000');
 });

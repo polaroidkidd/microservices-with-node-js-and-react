@@ -5,6 +5,10 @@ import express from "express";
 import type { ZodError } from "zod";
 
 import type { ICommentParsed } from "@ms/comments/src/comments.zod";
+import {
+  CommentSchemaEvent,
+  CommentSchemaParsed,
+} from "@ms/comments/src/comments.zod";
 import { Events } from "@ms/event-bus/src/constants";
 import type { IPost } from "@ms/posts/src/post.zod";
 
@@ -36,24 +40,35 @@ app.post(
   async (req: Request<IPost | ICommentParsed>, res: Response) => {
     const { body } = req;
     try {
-      if (body.type === Events.PostCreated) {
+      if (body.type === Events.enum.PostCreated) {
         const { title, id } = body.data as IPost;
         posts[id] = { id, title, comments: [] };
       }
 
-      if (body.type === Events.CommentCreated) {
-        const { id, content, postId, moderationState } =
-          body.data as ICommentParsed;
-        posts[postId].comments = [
-          ...posts[postId].comments,
-          { id, content, postId, moderationState },
+      if (body.type === Events.enum.CommentCreated) {
+        const parsedComment = CommentSchemaParsed.parse(body.data);
+
+        posts[parsedComment.postId].comments = [
+          ...posts[parsedComment.postId].comments,
+          parsedComment,
+        ];
+      }
+
+      if (body.type === Events.enum.CommentModerated) {
+        const { data: parsedComment } = CommentSchemaEvent.parse(body);
+
+        posts[parsedComment.postId].comments = [
+          ...posts[parsedComment.postId].comments.filter(
+            ({ id }) => id !== parsedComment.id
+          ),
+          parsedComment,
         ];
       }
 
       res.status(200);
       res.send();
     } catch (e) {
-      console.error(e);
+      console.error("Failed at Query Service", e);
       res.status(422).send(e as ZodError);
     }
   }
