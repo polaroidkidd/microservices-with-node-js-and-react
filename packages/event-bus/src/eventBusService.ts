@@ -20,6 +20,7 @@ app.use(bodyParser.json());
 
 app.use(cors({ origin: "http://localhost:3000" }));
 
+const events: IEventSchema[] = [];
 /**
  * Handle incoming events and spreading them to the other services
  */
@@ -31,6 +32,7 @@ app.post(
   ) => {
     try {
       const parsedEvent = EventSchema.parse(req.body);
+      events.push(parsedEvent);
       await axios.post(ServiceEventEndpoints.POSTS, parsedEvent);
       await axios.post(ServiceEventEndpoints.COMMENTS, parsedEvent);
       await axios.post(ServiceEventEndpoints.QUERY, parsedEvent);
@@ -44,6 +46,13 @@ app.post(
     }
   }
 );
+
+/**
+ * Get all events
+ */
+app.get(Routes.EVENTS, (req, res: Response<IEventSchema[]>) => {
+  res.status(200).send(events);
+});
 
 app.listen(4005, () => {
   console.info('Service "Eventbus" is listening on 4005');
