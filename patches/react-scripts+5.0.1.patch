@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-scripts/config/webpack.config.js b/node_modules/react-scripts/config/webpack.config.js
+index e465d8e..6566b3f 100644
+--- a/node_modules/react-scripts/config/webpack.config.js
++++ b/node_modules/react-scripts/config/webpack.config.js
+@@ -415,7 +415,7 @@ module.exports = function (webpackEnv) {
+             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
+             {
+               test: /\.(js|mjs|jsx|ts|tsx)$/,
+-              include: paths.appSrc,
++              // include: paths.appSrc,
+               loader: require.resolve('babel-loader'),
+               options: {
+                 customize: require.resolve(

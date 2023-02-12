@@ -4,7 +4,7 @@ import type { Request, Response } from "express";
 import express from "express";
 import type { ZodError } from "zod";
 
-import type { IComment } from "@ms/comments/src/comments.zod";
+import type { ICommentParsed } from "@ms/comments/src/comments.zod";
 import { Events } from "@ms/event-bus/src/constants";
 import type { IPost } from "@ms/posts/src/post.zod";
 
@@ -33,7 +33,7 @@ app.get(ROUTES.POSTS, async (req: Request, res: Response<IQuerySchema>) => {
  */
 app.post(
   ROUTES.EVENTS,
-  async (req: Request<IPost | IComment>, res: Response) => {
+  async (req: Request<IPost | ICommentParsed>, res: Response) => {
     const { body } = req;
     try {
       if (body.type === Events.PostCreated) {
@@ -42,10 +42,11 @@ app.post(
       }
 
       if (body.type === Events.CommentCreated) {
-        const { id, content, postId } = body.data as IComment;
+        const { id, content, postId, moderationState } =
+          body.data as ICommentParsed;
         posts[postId].comments = [
           ...posts[postId].comments,
-          { id, content, postId },
+          { id, content, postId, moderationState },
         ];
       }
 
