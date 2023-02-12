@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-import { CommentSchema } from "@ms/comments/src/comments.zod";
+import { CommentSchemaParsed } from "@ms/comments/src/comments.zod";
 import { IPostSchema } from "@ms/posts/src/post.zod";
 
 export const QueryPostSchema = IPostSchema.extend({
-  comments: z.array(CommentSchema),
+  comments: z.array(CommentSchemaParsed),
 });
 
 export type IQueryPostSchema = z.infer<typeof QueryPostSchema>;

@@ -20,6 +20,10 @@ app.use(bodyParser.json());
 
 app.use(cors({ origin: "http://localhost:3000" }));
 
+const events: IEventSchema[] = [];
+/**
+ * Handle incoming events and spreading them to the other services
+ */
 app.post(
   Routes.EVENTS,
   async (
@@ -28,19 +32,28 @@ app.post(
   ) => {
     try {
       const parsedEvent = EventSchema.parse(req.body);
+      events.push(parsedEvent);
       await axios.post(ServiceEventEndpoints.POSTS, parsedEvent);
       await axios.post(ServiceEventEndpoints.COMMENTS, parsedEvent);
       await axios.post(ServiceEventEndpoints.QUERY, parsedEvent);
+      await axios.post(ServiceEventEndpoints.MODERATION, parsedEvent);
 
       res.status(200);
       res.send();
     } catch (e) {
-      console.error(e);
+      console.error("Failed at Event-Bus Service", e);
       res.status(422).send(e as ZodError);
     }
   }
 );
 
+/**
+ * Get all events
+ */
+app.get(Routes.EVENTS, (req, res: Response<IEventSchema[]>) => {
+  res.status(200).send(events);
+});
+
 app.listen(4005, () => {
-  console.log('Service "Eventbus" is listening on 4005');
+  console.info('Service "Eventbus" is listening on 4005');
 });

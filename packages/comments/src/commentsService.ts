@@ -4,16 +4,16 @@ import cors from "cors";
 import { randomBytes } from "crypto";
 import type { Request, Response } from "express";
 import express from "express";
-import type { ZodError, z } from "zod";
+import type { ZodError } from "zod";
 
 import { Events, ServiceEventEndpoints } from "@ms/event-bus/src/constants";
 import type { IPost } from "@ms/posts/src/post.zod";
 
-import type { IComment, ICommentsByPostId } from "./comments.zod";
+import type { ICommentBase } from "./comments.zod";
 import {
-  CommentSchema,
-  CommentsByPostIdSchema,
-  ICommentSchemaEvent,
+  CommentModerationState,
+  CommentSchemaEvent,
+  CommentSchemaParsed,
 } from "./comments.zod";
 
 enum ROUTES {
@@ -21,59 +21,39 @@ enum ROUTES {
   EVENTS = "/events",
 }
 
-const commentsByPostId: ICommentsByPostId = {};
-
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({ origin: "http://localhost:3000" }));
-
-const ResComment = CommentSchema.pick({ content: true });
-
-type IResComment = z.infer<typeof ResComment>;
 
 /**
  * Create Comment on Post
  */
 app.post(
   ROUTES.POSTS,
-  (
-    req: Request<{ id: string }, {}, IResComment>,
-    res: Response<IComment[] | ZodError>
+  async (
+    req: Request<{ id: string }, {}, ICommentBase>,
+    res: Response<null | ZodError>
   ) => {
     const commentId = randomBytes(4).toString("hex");
     try {
-      // parse request
-      const parsedBody = ResComment.parse(req.body);
-      const comment: IComment = {
+      // parse request, add comment moderation state "Pending" and commentId
+      const comment = CommentSchemaParsed.parse({
+        ...req.body,
         id: commentId,
-        content: parsedBody.content,
         postId: req.params.id,
-      };
-      const comments = commentsByPostId[req.params.id] || [];
-      comments.push(comment);
-      commentsByPostId[req.params.id] = comments;
+        moderationState: CommentModerationState.enum.Pending,
+      });
 
-      // parse response
-      CommentsByPostIdSchema.parse(commentsByPostId);
-      axios.post(ServiceEventEndpoints.EVENT_BUS, {
-        type: Events.CommentCreated,
+      // send comment to eventbus
+      const response = await axios.post(ServiceEventEndpoints.EVENT_BUS, {
+        type: Events.enum.CommentCreated,
         data: comment,
       });
-      res.status(201).send(comments);
+      res.status(response.status).send();
     } catch (e) {
       console.error(e);
-      res.status(422).send(e as ZodError);
+      res.status(500).send(e as ZodError);
     }
-  }
-);
-
-/**
- * Get Comments from Post
- */
-app.get(
-  ROUTES.POSTS,
-  (req: Request<{ id: string }>, res: Response<IComment[]>) => {
-    res.send(commentsByPostId[req.params.id] || []);
   }
 );
 
@@ -82,16 +62,27 @@ app.get(
  */
 app.post(
   ROUTES.EVENTS,
-  (req: Request, res: Response<{ post: IPost } | ZodError>) => {
+  async (req: Request, res: Response<{ post: IPost } | ZodError>) => {
     const { body } = req;
     try {
-      if (body.type === Events.CommentCreated) {
-        const parsedBody = ICommentSchemaEvent.parse(body);
+      if (body.type === Events.enum.CommentCreated) {
+        const parsedBody = CommentSchemaEvent.parse(body);
 
         console.info("Event Received: ", parsedBody.type);
       }
-      res.status(200);
-      res.send();
+      if (body.type === Events.enum.CommentUpdated) {
+        const parsedBody = CommentSchemaEvent.parse(body);
+        const comment = CommentSchemaParsed.parse(parsedBody.data);
+        const content =
+          comment.moderationState === CommentModerationState.enum.Rejected
+            ? "Rejected by Mod Team"
+            : comment.content;
+        await axios.post(ServiceEventEndpoints.EVENT_BUS, {
+          type: Events.enum.CommentUpdated,
+          data: { ...comment, content },
+        });
+      }
+      res.status(200).send();
     } catch (e) {
       console.error(e);
       res.status(422).send(e as ZodError);
